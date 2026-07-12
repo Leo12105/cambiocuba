@@ -7,7 +7,6 @@
   <meta name="description" content="Precio actualizado del Dólar, Euro y MLC en el mercado informal cubano.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
 
@@ -318,33 +317,7 @@
       font-size: 1.3rem;
     }
 
-    /* HISTORIAL */
-    .historial {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 30px;
-      margin-bottom: 60px;
-    }
-
-    .historial h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
-      margin-bottom: 8px;
-      letter-spacing: -.5px;
-    }
-
-    .historial p {
-      color: var(--text-soft);
-      margin-bottom: 24px;
-      font-size: .95rem;
-    }
-
-    .chart-container {
-      position: relative;
-      height: 340px;
-    }
-
+    
     /* COMPARTIR */
     .compartir {
       background: var(--gradient);
@@ -486,13 +459,7 @@
       </div>
     </section>
 
-    <section class="historial">
-      <h2>📊 Últimos 7 días</h2>
-      <p>Evolución del precio de USD, EUR y MLC en el mercado informal.</p>
-      <div class="chart-container">
-        <canvas id="chart"></canvas>
-      </div>
-    </section>
+    
 
     <section class="compartir">
       <h2>Comparte con tus amigos</h2>
@@ -533,8 +500,7 @@
       document.documentElement.setAttribute('data-theme', nuevo);
       themeBtn.textContent = nuevo === 'dark' ? '☀️' : '🌙';
       localStorage.setItem('tema', nuevo);
-      if (datosGlobal) crearGrafica(datosGlobal.historial);
-    });
+        });
 
     // CARGAR TASAS
     async function cargar() {
@@ -544,7 +510,6 @@
         datosGlobal = data;
         
         renderMonedas(data);
-        crearGrafica(data.historial);
         actualizarFecha(data.actualizado);
         actualizarConversor();
         
@@ -623,74 +588,7 @@
     document.getElementById('convFrom').addEventListener('change', actualizarConversor);
     document.getElementById('convTo').addEventListener('change', actualizarConversor);
 
-    // GRÁFICA
-    let chartInstance = null;
-    function crearGrafica(historial) {
-      const ctx = document.getElementById('chart').getContext('2d');
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const textColor = isDark ? '#94a3b8' : '#64748b';
-      const gridColor = isDark ? '#2a2a4a' : '#e2e8f0';
-      
-      const labels = historial.map(d => {
-        const f = new Date(d.fecha);
-        return f.toLocaleDateString('es-CU', { day: 'numeric', month: 'short' });
-      });
-      
-      const datasets = [
-        {
-          label: 'USD',
-          data: historial.map(d => d.tasas.USD),
-          borderColor: '#6366f1',
-          backgroundColor: 'rgba(99, 102, 241, .1)',
-          tension: 0.4,
-          fill: true
-        },
-        {
-          label: 'EUR',
-          data: historial.map(d => d.tasas.ECU),
-          borderColor: '#8b5cf6',
-          backgroundColor: 'rgba(139, 92, 246, .1)',
-          tension: 0.4,
-          fill: true
-        },
-        {
-          label: 'MLC',
-          data: historial.map(d => d.tasas.MLC),
-          borderColor: '#ec4899',
-          backgroundColor: 'rgba(236, 72, 153, .1)',
-          tension: 0.4,
-          fill: true
-        }
-      ];
-      
-      if (chartInstance) chartInstance.destroy();
-      
-      chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: { labels, datasets },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top',
-              labels: { color: textColor, font: { weight: '600' } }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: textColor },
-              grid: { color: gridColor }
-            },
-            y: {
-              ticks: { color: textColor },
-              grid: { color: gridColor }
-            }
-          }
-        }
-      });
-    }
-
+    
     // COMPARTIR
     document.getElementById('btnCompartir').addEventListener('click', () => {
       if (!datosGlobal?.actual?.tasas) return;
