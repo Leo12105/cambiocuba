@@ -588,10 +588,12 @@
       });
     }
 
-    function actualizarFecha(iso) {
+       function actualizarFecha(iso) {
       const fecha = new Date(iso);
       const opts = { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
-      document.getElementById('actualizado').textContent = `📅 Actualizado: ${fecha.toLocaleDateString('es-CU', opts)}`;
+      const fechaTasa = datosGlobal.actual?.fecha ? new Date(datosGlobal.actual.fecha) : null;
+      const fechaTexto = fechaTasa ? fechaTasa.toLocaleDateString('es-CU', { day: 'numeric', month: 'long' }) : '';
+      document.getElementById('actualizado').textContent = `📅 Tasas del ${fechaTexto} · Consultado: ${fecha.toLocaleDateString('es-CU', opts)}`;
     }
 
     // CONVERSOR
