@@ -130,15 +130,6 @@
       line-height: 1.6;
     }
 
-    .actualizado {
-      display: inline-block;
-      background: var(--gradient-soft);
-      color: var(--primary);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: .82rem;
-      font-weight: 600;
-    }
 
     /* TARJETAS DE MONEDAS */
     .monedas {
@@ -424,7 +415,6 @@
     <section class="hero">
       <h1>Precio del <span>Dólar, Euro y MLC</span><br>en Cuba hoy</h1>
       <p>Tasas actualizadas del mercado informal cubano. Datos de elToque.</p>
-      <div class="actualizado" id="actualizado">Cargando...</div>
     </section>
 
     <section class="monedas" id="monedas">
@@ -510,7 +500,6 @@
         datosGlobal = data;
         
         renderMonedas(data);
-        actualizarFecha(data.actualizado);
         actualizarConversor();
         
       } catch (error) {
@@ -553,13 +542,6 @@
       });
     }
 
-       function actualizarFecha(iso) {
-      const fecha = new Date(iso);
-      const opts = { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
-      const fechaTasa = datosGlobal.actual?.fecha ? new Date(datosGlobal.actual.fecha) : null;
-      const fechaTexto = fechaTasa ? fechaTasa.toLocaleDateString('es-CU', { day: 'numeric', month: 'long' }) : '';
-      document.getElementById('actualizado').textContent = `📅 Tasas del ${fechaTexto} · Consultado: ${fecha.toLocaleDateString('es-CU', opts)}`;
-    }
 
     // CONVERSOR
     function actualizarConversor() {
